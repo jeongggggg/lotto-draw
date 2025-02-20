@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     const resultContainer = document.getElementById("result");
-    resultContainer.textContent = "기대하시라 ~ 🤹🏻";
+    resultContainer.textContent = "🤹🏻 기대하시라 🤹🏻";
 });
 
 document.getElementById("drawButton").addEventListener("click", function () {
