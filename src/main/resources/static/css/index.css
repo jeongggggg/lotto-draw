@@ -6,11 +6,24 @@ section{
     background: #352c2c;
 }
 
-.inner {
-    width: 30%;
-    text-align: center;
+.cont{
+    width: 100%;
+    max-width: 90%;
+    height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10rem;
     background: rgba(255, 255, 255, 0.2);
-    padding: 50px 0;
+    border-radius: 10px;
+}
+
+.inner {
+    width: 90%;
+    text-align: center;
+    background: rgb(0 0 0 / 20%);
+    padding: 100px 0;
     border-radius: 15px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(10px);
@@ -18,10 +31,9 @@ section{
 }
 
 h1 {
-    font-size: 2rem;
+    font-size: 3.6rem;
     color: #fff;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-    margin-bottom: 10rem;
 }
 
 .lotto-numbers {
@@ -29,6 +41,7 @@ h1 {
     justify-content: center;
     gap: 15px;
     color: #fff;
+    font-size: 2.3rem;
     padding: 6px 0 2px;
     border-radius: 10px;
     margin-bottom: 20px;
@@ -39,14 +52,13 @@ h1 {
 }
 
 .ball {
-    width: 40px;
-    height: 40px;
+    width: 70px;
+    height: 70px;
     background: radial-gradient(circle, #fff, #ffd700);
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 20px;
     font-weight: bold;
     color: #333;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
@@ -54,11 +66,12 @@ h1 {
 }
 
 .ball span {
+    width: 100%;
+    height: 100%;
+    font-size: 2.3rem;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    height: 100%;
 }
 
 .ball:hover {
@@ -66,15 +79,15 @@ h1 {
 }
 
 button {
-    margin-top: 20px;
-    padding: 10px 20px;
-    font-size: 1rem;
+    width: 60%;
+    padding: 20px;
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
     background: #ff5722;
-    color: white;
+    color: #fff;
     cursor: pointer;
     transition: background 0.3s;
+    font-size: 2rem;
 }
 
 button:hover {
