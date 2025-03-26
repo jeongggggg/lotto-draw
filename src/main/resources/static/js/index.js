@@ -1,66 +1,89 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const resultContainer = document.getElementById("result");
-    resultContainer.textContent = "🤹🏻 기대하시라 🤹🏻";
+document.addEventListener("DOMContentLoaded", () => {
+    setInitialResultText();
+    setDrawButtonEvent();
 });
 
-document.getElementById("drawButton").addEventListener("click", function () {
+function setInitialResultText() {
+    const resultContainer = document.getElementById("result");
+    resultContainer.textContent = "🤹🏻 기대하시라 🤹🏻";
+}
+
+function setDrawButtonEvent() {
+    const button = document.getElementById("drawButton");
+    button.addEventListener("click", handleDrawClick);
+}
+
+function handleDrawClick() {
     const button = document.getElementById("drawButton");
     const resultContainer = document.getElementById("result");
 
-    button.disabled = true;
-    button.style.backgroundColor = "#ccc";
-    button.textContent = "번호 추첨 중...";
-
+    disableButton(button, "번호 추첨 중...");
     resultContainer.textContent = "번호 추첨 중...";
 
-    fetchLottoNumbers();
+    fetchLottoNumbers()
+        .then(numbers => displayLottoBalls(numbers))
+        .catch(error => console.error("에러 발생:", error))
+        .finally(() => {
+            setTimeout(() => enableButton(button, "추첨하기"), 3000);
+        });
+}
 
-    setTimeout(function () {
-        button.disabled = false;
-        button.style.backgroundColor = "#4CAF50";
-        button.textContent = "추첨하기";
-    }, 3000);
-});
+function disableButton(button, text) {
+    button.disabled = true;
+    button.style.backgroundColor = "#ccc";
+    button.textContent = text;
+}
+
+function enableButton(button, text) {
+    button.disabled = false;
+    button.style.backgroundColor = "#4CAF50";
+    button.textContent = text;
+}
 
 function fetchLottoNumbers() {
-    fetch("http://localhost:8080/lotto")
-        .then(response => response.json())
-        .then(data => {
-            const resultContainer = document.getElementById("result");
-            resultContainer.innerHTML = "";
+    return fetch("http://localhost:8080/lotto")
+        .then(response => {
+            if (!response.ok) throw new Error("서버 응답 오류");
+            return response.json();
+        });
+}
 
-            data.forEach((number, index) => {
-                setTimeout(() => {
-                    const ball = document.createElement("div");
-                    ball.classList.add("ball");
+function displayLottoBalls(numbers) {
+    const resultContainer = document.getElementById("result");
+    resultContainer.innerHTML = "";
 
-                    const numberSpan = document.createElement("span");
-                    numberSpan.textContent = number;
-                    ball.appendChild(numberSpan);
+    numbers.forEach((number, index) => {
+        setTimeout(() => {
+            const ball = createLottoBall(number);
+            resultContainer.appendChild(ball);
 
-                    if (number <= 10) {
-                        ball.style.background = "#fbc400";
-                    } else if (number <= 20) {
-                        ball.style.background = "#69c8f2";
-                    } else if (number <= 30) {
-                        ball.style.background = "#ff7272";
-                    } else if (number <= 40) {
-                        ball.style.background = "#aaa";
-                    } else {
-                        ball.style.background = "#b0d840";
-                    }
+            setTimeout(() => {
+                ball.style.opacity = "1";
+                ball.style.transform = "translateX(0) scale(1)";
+                ball.style.transition = "opacity 0.5s ease-out, transform 0.5s ease-out";
+            }, 10);
+        }, index * 500);
+    });
+}
 
-                    ball.style.opacity = "0";
-                    ball.style.transform = "scale(0.5)";
-                    resultContainer.appendChild(ball);
+function createLottoBall(number) {
+    const ball = document.createElement("div");
+    ball.classList.add("ball");
+    ball.style.opacity = "0";
+    ball.style.transform = "scale(0.5)";
+    ball.style.background = getBallColor(number);
 
-                    setTimeout(() => {
-                        ball.style.opacity = "1";
-                        ball.style.transform = "translateX(0) scale(1)";
-                        ball.style.transition = "opacity 0.5s ease-out, transform 0.5s ease-out";
-                    }, 50);
-                }, index * 500);
-            });
-        })
-        .catch(error => console.error("에러 발생:", error));
+    const numberSpan = document.createElement("span");
+    numberSpan.textContent = number;
+    ball.appendChild(numberSpan);
+
+    return ball;
+}
+
+function getBallColor(number) {
+    if (number <= 10) return "#fbc400"; // 노랑
+    if (number <= 20) return "#69c8f2"; // 파랑
+    if (number <= 30) return "#ff7272"; // 빨강
+    if (number <= 40) return "#aaa";    // 회색
+    return "#b0d840";                   // 초록
 }
